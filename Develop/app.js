@@ -39,7 +39,7 @@ const questions = [
 const engineerQuestion = [
     {
         type: 'input',
-        message: 'Enter Github Url',
+        message: 'Enter Github Username',
         name: 'GitHubUser'
     }
 ]
@@ -60,22 +60,39 @@ const internQuestion = [
     }
 ]
 
-function init() {
+async function init() {
     inquirer
         .prompt(questions)
         .then(answers => {
             const employee = new Employee(answers.name, answers.id, answers.email, answers.role)
-            console.log(employee)
-            if (answers.role === Engineer) {
-            inquirer
-            .prompt(engineerQuestion)
-            .then(response => {
-                const engineer = new (response.GitHubUser)
-                console.log(engineer);
-            })
+
+            console.log(employee.role);
+            if (employee.role === 'Engineer') {
+                inquirer.prompt(engineerQuestion)
+                    .then(response => {
+                        const engineer = new Engineer(employee.name, employee.id, employee.email, employee.role, response.GitHubUser);
+                        console.log(engineer);
+                        return engineer;
+                    })
+            } else if (employee.role === 'Manager') {
+                inquirer.prompt(managerQuestion)
+                    .then(response => {
+                        const manager = new Manager(employee.name, employee.id, employee.email, employee.role, response.officeNumber);
+                        console.log(manager);
+                        return manager;
+                    })
+            } else {
+                inquirer.prompt(internQuestion)
+                    .then(response => {
+                        const intern = new Intern(employee.name, employee.id, employee.email, employee.role, response.school);
+                        console.log(intern);
+                        return intern;
+                    })
+
             }
         })
 }
+
 init();
 
 // Write code to use inquirer to gather information about the development team members,
