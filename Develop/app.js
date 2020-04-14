@@ -1,6 +1,7 @@
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+const Employee = require("./lib/Employee");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
@@ -63,13 +64,14 @@ function init() {
     inquirer
         .prompt(questions)
         .then(answers => {
-            const employee = new Employee(answers.name, answers.role, answers.id, answers.email)
-            console.log(employee);
+            const employee = new Employee(answers.name, answers.id, answers.email, answers.role)
+            console.log(employee)
             if (answers.role === Engineer) {
             inquirer
             .prompt(engineerQuestion)
             .then(response => {
                 const engineer = new (response.GitHubUser)
+                console.log(engineer);
             })
             }
         })
