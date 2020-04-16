@@ -11,6 +11,7 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const employees = [];
 
 const questions = [
     {
@@ -60,7 +61,16 @@ const internQuestion = [
     }
 ]
 
-async function init() {
+const addAnother = [
+    {
+        type: 'list',
+        message: 'Would you like to add another employee?',
+        name: 'addPerson',
+        choices: ['Yes', 'No']
+
+    }
+]
+function init() {
     inquirer
         .prompt(questions)
         .then(answers => {
@@ -72,13 +82,21 @@ async function init() {
                     .then(response => {
                         const engineer = new Engineer(employee.name, employee.id, employee.email, employee.role, response.GitHubUser);
                         console.log(engineer);
+                        employees.push(engineer);
+                        console.log(employees);
+                        addEmployee();
+
                         return engineer;
-                    })
+                        
+                    }) 
             } else if (employee.role === 'Manager') {
                 inquirer.prompt(managerQuestion)
                     .then(response => {
                         const manager = new Manager(employee.name, employee.id, employee.email, employee.role, response.officeNumber);
                         console.log(manager);
+                        employees.push(manager);
+                        console.log(employees);
+                        addEmployee();
                         return manager;
                     })
             } else {
@@ -86,11 +104,26 @@ async function init() {
                     .then(response => {
                         const intern = new Intern(employee.name, employee.id, employee.email, employee.role, response.school);
                         console.log(intern);
+                        employees.push(intern);
+                        console.log(employees);
+                        addEmployee();
                         return intern;
                     })
 
             }
         })
+}
+
+function addEmployee(){
+    inquirer
+    .prompt(addAnother)
+    .then(res => {
+        if(res.addPerson === 'Yes'){
+            init();
+        }else{
+            render();
+        }
+    })
 }
 
 init();
