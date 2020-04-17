@@ -47,7 +47,7 @@ const engineerQuestion = [
 
 const managerQuestion = [
     {
-        type: 'input',
+        type: 'number',
         message: 'Enter Office Number',
         name: 'officeNumber'
     }
@@ -70,43 +70,45 @@ const addAnother = [
 
     }
 ]
-function init() {
+function addEmployee() {
     inquirer
         .prompt(questions)
         .then(answers => {
-            const employee = new Employee(answers.name, answers.id, answers.email, answers.role)
+            const employee = new Employee(answers.name, answers.id, answers.email)
 
-            console.log(employee.role);
-            if (employee.role === 'Engineer') {
+            if (answers.role === 'Engineer') {
                 inquirer.prompt(engineerQuestion)
                     .then(response => {
-                        const engineer = new Engineer(employee.name, employee.id, employee.email, employee.role, response.GitHubUser);
+                        const engineer = new Engineer(employee.name, employee.id, employee.email, response.GitHubUser);
                         console.log(engineer);
+                        console.log(employee);
                         employees.push(engineer);
                         console.log(employees);
-                        addEmployee();
+                        init();
 
                         return engineer;
                         
                     }) 
-            } else if (employee.role === 'Manager') {
+            } else if (answers.role === 'Manager') {
                 inquirer.prompt(managerQuestion)
                     .then(response => {
-                        const manager = new Manager(employee.name, employee.id, employee.email, employee.role, response.officeNumber);
+                        const manager = new Manager(answers.name, answers.id, answers.email, response.officeNumber);
                         console.log(manager);
+                        console.log(employee);
                         employees.push(manager);
                         console.log(employees);
-                        addEmployee();
+                        init();
                         return manager;
                     })
             } else {
                 inquirer.prompt(internQuestion)
                     .then(response => {
-                        const intern = new Intern(employee.name, employee.id, employee.email, employee.role, response.school);
+                        const intern = new Intern(employee.name, employee.id, employee.email, response.school);
                         console.log(intern);
+                        console.log(employee);
                         employees.push(intern);
                         console.log(employees);
-                        addEmployee();
+                        init();
                         return intern;
                     })
 
@@ -114,19 +116,20 @@ function init() {
         })
 }
 
-function addEmployee(){
+function init(){
     inquirer
     .prompt(addAnother)
     .then(res => {
         if(res.addPerson === 'Yes'){
-            init();
+            addEmployee();
         }else{
-            render();
+            const html = render(employees);
+            fs.writeFile(outputPath, 'team.html', html);
         }
     })
 }
 
-init();
+addEmployee();
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
