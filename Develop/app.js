@@ -11,8 +11,10 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+// array to push the created employees to
 const employees = [];
 
+// questions to build employee class
 const questions = [
     {
         type: 'input',
@@ -37,6 +39,7 @@ const questions = [
     }
 ]
 
+// inquirer questions to extend the employee class to either manager, engineer or intern
 const engineerQuestion = [
     {
         type: 'input',
@@ -61,6 +64,7 @@ const internQuestion = [
     }
 ]
 
+// option to add another employee
 const addAnother = [
     {
         type: 'list',
@@ -70,12 +74,15 @@ const addAnother = [
 
     }
 ]
+
+// function to ask the questions to build the employee class and determine which subclass to be added
 function addEmployee() {
     inquirer
         .prompt(questions)
         .then(answers => {
             const employee = new Employee(answers.name, answers.id, answers.email)
 
+            // conditional to switch between the subclasses and push the result to the employees array
             if (answers.role === 'Engineer') {
                 inquirer.prompt(engineerQuestion)
                     .then(response => {
@@ -116,6 +123,7 @@ function addEmployee() {
         })
 }
 
+// function to ask if another employee should be added
 function init(){
     inquirer
     .prompt(addAnother)
@@ -123,13 +131,28 @@ function init(){
         if(res.addPerson === 'Yes'){
             addEmployee();
         }else{
+            // attempt at setting up writing the files to new directory, it writes the file and creates the team.html but i couldnt get the output folder to be created
             const html = render(employees);
-            fs.writeFile(outputPath, 'team.html', html);
+            if(!fs.existsSync(outputPath)){
+                fs.mkdir(outputPath, function(err){
+                    if(err){
+                        console.log(err);
+                    }
+                })
+            }
+            fs.writeFile('team.html', html, function(err){
+                if(err){
+                    return console.log(err);
+                }
+                console.log('woop');
+            });
         }
     })
 }
 
 addEmployee();
+
+
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
