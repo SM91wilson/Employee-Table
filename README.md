@@ -1,6 +1,6 @@
-# Homework10
+#employee Table 
 
-This Homework was to produce a template engine that shows an employee summary of an entire team.
+This project was to produce a template engine that shows an employee summary of an entire team.
 
 The summary is created by the user through the comman line using prompts from inquirer. The prompts build the classes used to store the information of each employee.
 
