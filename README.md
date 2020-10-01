@@ -1,4 +1,4 @@
-#employee Table 
+# Employee Table
 
 This project was to produce a template engine that shows an employee summary of an entire team.
 
