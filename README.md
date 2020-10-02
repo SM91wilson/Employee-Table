@@ -2,7 +2,7 @@
 
 This project was to produce a template engine that shows an employee summary of an entire team.
 
-The summary is created by the user through the comman line using prompts from inquirer. The prompts build the classes used to store the information of each employee.
+The summary is created by the user through the command line using prompts from inquirer. The prompts build the classes used to store the information of each employee.
 
 Constructors were used to build the classes and extend them depending on the role of the employee which is set by the user from the inquirer.
 
