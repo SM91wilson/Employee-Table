@@ -6,6 +6,6 @@ The summary is created by the user through the command line using prompts from i
 
 Constructors were used to build the classes and extend them depending on the role of the employee which is set by the user from the inquirer.
 
-Jest was used to to run tests with the command npm run test to ensure the information for each employee can be reached through the classes made with constructors.
+Jest was used to to run tests with the command npm run test to ensure the information for each employee can be reached through the classes made with constructors. The tests were run throughtout development of the program.
 
 After the information has been gathered and the user selects no to adding any more employees, the render function is run that creates the team.html file populated by the classes.
